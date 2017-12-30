@@ -1,0 +1,77 @@
+%%%%%%%%%%%八数码问题%%%%%%%%%%%
+clear all
+clc
+tic
+start=[2 8 3;1 0 4;7 6 5];%%%
+%start=[8 2 4;1 0 3;7 6 5];%%%
+goal=[1 2 3;8 0 4;7 6 5];
+k=1;
+open(1).current=start;
+open(1).g=1;
+open(1).f=f(open(1).current)+open(1).g;
+open(1).pre=open(1);
+bestnode(1)=open(1);
+cclose=[];
+while ~isempty(open)
+    A=[];
+for h=1:length(open)
+A(h)=open(h).f;
+end
+[~,k]=min(A);
+cclose=[cclose open(k)];
+bestnode=cclose(length(cclose));
+open(k)=[];
+if isin(cclose(length(cclose)).current,goal)
+    disp('输出搜索过程：')
+    x=bestnode;
+    while ~isin(x.current,start)
+    disp(x.current)
+    x=x.pre;
+    end
+    toc
+    break
+else
+    y=move(bestnode.current);%%扩展节点
+    [p,~]=size(y);
+    p=p/3;
+    for l=1:p
+     successor(l).current=y(3*l-2:3*l,:);
+     successor(l).pre=cclose(length(cclose));
+     successor(l).g=cclose(length(cclose)).g+1;
+     successor(l).f=f(successor(l).current)+successor(l).g;
+    end
+
+for l=1:p
+    x=0;
+    r=0;
+for o=1:length(open)
+   if isin(successor(l).current,open(o).current) %%%若suc属于open
+   if successor(l).g<open(o).g %%%如果g(suc)<g(old)
+       open(o).pre=bestnode;
+       open(o).pre.g=bestnode.g;
+       open(o).pre.f=bestnode.f;
+       x=[x l];
+       break
+   else
+       x=[x l];
+   end
+   end
+end
+
+for u=1:length(cclose)
+      if isin(successor(l).current,cclose(u).current)&&(length(x)==1)&&(successor(l).g<cclose(u).g)
+       cclose(u).pre=bestnode;
+       cclose(u).pre.g=bestnode.g;
+       cclose(u).pre.f=bestnode.f;
+      elseif ~isin(successor(l).current,cclose(u).current)&&(length(x)==1)%%%若suc既不在open表里也不在close表里
+          continue
+      else
+          r=r+1;
+      end
+end
+if r==0
+ open=[open successor(l)];%%%%将suc加入open表
+end
+end
+end
+end
