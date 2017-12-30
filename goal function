@@ -1,0 +1,9 @@
+function y=f(A1)
+goal=[1 2 3;8 0 4;7 6 5];
+    A=[reshape(A1,1,9);reshape(goal,1,9)];%
+   y=pdist(A,'cityblock');%%曼哈顿距离
+%y=0;%%BFS
+  % B=A1-goal;
+  % B(B~=0)=1;
+ % y=sum(sum(B));%%不同的对应点的个数
+end
