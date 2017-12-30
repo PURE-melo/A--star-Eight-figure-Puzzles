@@ -1,0 +1,14 @@
+function y=isin(successsorcurrent,opencurrent)
+y=0;
+t=0;
+for j=1:9
+     if successsorcurrent(j)~=opencurrent(j)
+          break
+     else 
+         t=t+1;
+     end
+end
+if t==9
+    y=1;
+end
+end
