@@ -1,0 +1,5 @@
+function A=exchange(A,x1,x2)
+   temp=A(x1);
+   A(x1)=A(x2);
+   A(x2)=temp;
+end
